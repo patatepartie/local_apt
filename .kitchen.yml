@@ -2,6 +2,11 @@
 driver:
   name: vagrant
 
+driver_config:
+  synced_folders:
+    # Bug in kitchen-vagrant fixed but not merged https://github.com/test-kitchen/kitchen-vagrant/pull/72
+    - ["../../../test/dpkg/binaries", "/usr/local/local-repository", "create: true"]
+
 provisioner:
   name: chef_solo
 
