@@ -10,26 +10,30 @@
 use_inline_resources if defined?(use_inline_resources)
 
 action :add do
-  directory new_resource.directory
+  directory "create_#{new_resource.repo_name}" do
+    path new_resource.directory
+    owner 'root'
+    group 'root'
+    recursive true
+    mode 00644
+  end
 
-  bash "generate_repository_#{new_resource.name}" do
+  bash "generate_repository_#{new_resource.repo_name}" do
     user 'root'
     code 'dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz'
     cwd new_resource.directory
-    not_if { ::File.exists?("#{new_resource.directory}/Packages.gz") }
+    not_if "test -e #{new_resource.directory}/Packages.gz"
   end
 
-  apt_repository "apt_source_#{new_resource.name}" do
-    repo_name new_resource.name
+  apt_repository "add_apt_source_#{new_resource.repo_name}" do
+    repo_name new_resource.repo_name
     uri "file:#{new_resource.directory}"
     components ['./']
   end
 end
 
 action :update do
-  directory new_resource.directory
-
-  bash "regenerate_repository_#{new_resource.name}" do
+  bash "regenerate_repository_#{new_resource.repo_name}" do
     user 'root'
     code 'dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz'
     cwd new_resource.directory
@@ -39,14 +43,8 @@ action :update do
 end
 
 action :remove do
-  directory new_resource.directory do
-    action :delete
-  end
-
-  apt_repository "apt_source_#{new_resource.name}" do
-    repo_name new_resource.name
-    uri "file:#{new_resource.directory}"
-    components ['./']
+  apt_repository "remove_apt_source_#{new_resource.repo_name}" do
+    repo_name new_resource.repo_name
     action :remove
   end
 end

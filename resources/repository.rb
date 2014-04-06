@@ -15,5 +15,5 @@ def initialize(*args)
   @action = :add
 end
 
-attribute :name, :kind_of => String, :name_attribute => true
+attribute :repo_name, :kind_of => String, :name_attribute => true
 attribute :directory, :kind_of => String
