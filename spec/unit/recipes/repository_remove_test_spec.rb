@@ -9,5 +9,5 @@ describe 'local_apt::repository_remove_test' do
     stub_command('test -e /usr/local/repo_to_remove/Packages.gz').and_return(false)
   end
 
-  it { should remove_apt_repository('remove_apt_source_to_remove') }
+  it { should remove_apt_repository('to_remove') }
 end

@@ -25,7 +25,7 @@ action :add do
     not_if "test -e #{new_resource.directory}/Packages.gz"
   end
 
-  apt_repository "add_apt_source_#{new_resource.repo_name}" do
+  apt_repository new_resource.repo_name do
     repo_name new_resource.repo_name
     uri "file:#{new_resource.directory}"
     components ['./']
@@ -43,7 +43,9 @@ action :update do
 end
 
 action :remove do
-  apt_repository "remove_apt_source_#{new_resource.repo_name}" do
+  # TODO remove Packages.gz in directory
+
+  apt_repository new_resource.repo_name do
     repo_name new_resource.repo_name
     action :remove
   end

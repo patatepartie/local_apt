@@ -11,7 +11,7 @@ describe 'local_apt::repository_add_test' do
     end
 
     it { should create_directory('/usr/local/repo_to_add') }
-    it { should add_apt_repository('add_apt_source_to_add') }
+    it { should add_apt_repository('to_add') }
     it { should run_bash('generate_repository_to_add').with(cwd: '/usr/local/repo_to_add') }
   end
 

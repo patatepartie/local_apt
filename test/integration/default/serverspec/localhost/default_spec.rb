@@ -8,7 +8,7 @@ describe file('/usr/local/local-repository/Packages.gz') do
   it { should be_file }
 end
 
-describe file('/etc/apt/sources.list.d/apt_source_local.list') do
+describe file('/etc/apt/sources.list.d/local.list') do
   it { should be_file }
 end
 
