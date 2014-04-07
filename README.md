@@ -1,26 +1,61 @@
 # local_apt cookbook
 
 The goal of this cookbook is to create apt repositories local to a machine.  
-They will serve all the packages contained in a particular directory.
+They will serve all the packages contained in a particular directory and its subdirectories.
 
 The main use case is this:  
 You're developing the cookbook that manages the installation and configuration of your product, packaged as a deb file.  
-In production (probably also integration, uat, stating, etc...), the cookbook installs the package from your corporate apt repository.  
+In production (probably also integration, uat, staging, etc...), the cookbook installs the package from your corporate apt repository.  
 But in development you don't want to have to push your package to a full blown repository to test its installation.  
 With this cookbook, you just need to expose your package(s) to the VM your testing on (via synced folder for instance) and it will be available with apt-get.
 
-The technique comes from https://help.ubuntu.com/community/Repositories/Personal
+See https://help.ubuntu.com/community/Repositories/Personal for details on the setup.
 
 # Requirements
-Local_apt depends on the `apt` cookbook in its 2.0+ version, which requires Chef 11.0+.  
-The code should however work on older versions.  
-In that case override the version in your dependency manager.
+`local_apt` depends on the `apt` cookbook in its 2.0+ version, which requires Chef 11.0+.  
+The code should however work on older versions. In that case override the version in your dependency manager.
 
 # Usage
+`local_apt` provides one lwrp, `local_apt_repository` and two recipes, `default` and `dependencies`.
+
+Use the `default` recipe if you want to serve the `/usr/local/local-repository` directory (overridable), the `dependencies` recipe and the `local_apt_repository` for finer control or multiple repositories.
 
 # Attributes
+* `default['local_apt']['directory']` - Directory that will be served by the `default` recipe
 
 # Recipes
+
+### default recipe
+In the simpliest case, just include the `default` recipe.
+Add `recipe[local_apt]` at the beginning of your run list or:
+```
+include_recipe 'local_apt'
+```
+
+This will include and install the proper dependencies, and create a local apt repository from
+```
+/usr/local/local-repository
+```
+This is overridable by an attribute.
+
+### dependencies recipe
+The `dependencies` recipe only install the required dependencies but do not create a local repository.
+Add `recipe[local_apt::dependencies]` at the beginning of your run list or:
+```
+include_recipe 'local_apt::dependencies'
+```
+
+# Resources/Providers
+
+### `local_apt_repository` lwrp
+#### Actions
+* :add - Adds a repository to the apt source list which serves packages from `directory` and its subdirectories
+* :update - Regenerates the repository's packages list and update apt-get
+* :remove - Removes the apt source list but not `directory`
+
+#### Attribute Parameters
+* repo_name - Name of the apt source list file
+* directory - Directory containing the packages to serve
 
 # License & Authors
 
