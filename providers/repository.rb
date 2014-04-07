@@ -26,6 +26,7 @@ action :add do
     group 'root'
     recursive true
     mode 00644
+    not_if "test -d #{new_resource.directory}"
   end
 
   bash "generate_repository_#{new_resource.repo_name}" do

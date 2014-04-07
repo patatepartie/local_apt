@@ -6,6 +6,7 @@ describe 'local_apt::repository_remove_test' do
   end
 
   before do
+    stub_command('test -d /usr/local/repo_to_remove').and_return(false)
     stub_command('test -e /usr/local/repo_to_remove/Packages.gz').and_return(false)
   end
 
