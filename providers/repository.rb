@@ -25,7 +25,7 @@ action :add do
     owner 'root'
     group 'root'
     recursive true
-    mode 00644
+    mode 00755
     not_if "test -d #{new_resource.directory}"
   end
 
