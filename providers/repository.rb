@@ -44,6 +44,10 @@ action :add do
 end
 
 action :update do
+  execute 'apt-get update' do
+    action :nothing
+  end
+
   bash "regenerate_repository_#{new_resource.repo_name}" do
     user 'root'
     code 'dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz'

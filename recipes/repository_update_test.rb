@@ -17,10 +17,6 @@
 # limitations under the License.
 #
 
-execute 'apt-get update' do
-  action :nothing
-end
-
 local_apt_repository 'to_update' do
   directory '/usr/local/repo_to_update'
 end
