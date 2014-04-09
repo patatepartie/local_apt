@@ -1,4 +1,4 @@
-require_relative '../spec_helper'
+require 'unit/spec_helper'
 
 describe 'local_apt::repository_update_test' do
   subject(:chef_run) do

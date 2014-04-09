@@ -1,4 +1,4 @@
-require_relative '../spec_helper'
+require 'unit/spec_helper'
 
 describe 'local_apt::default' do
   DEFAULT_DIRECTORY = '/usr/local/local-repository'
