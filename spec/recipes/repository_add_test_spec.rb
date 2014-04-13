@@ -1,4 +1,4 @@
-require 'unit/spec_helper'
+require 'spec_helper'
 
 describe 'local_apt::repository_add_test' do
   subject(:chef_run) do
@@ -9,6 +9,9 @@ describe 'local_apt::repository_add_test' do
   let(:to_add_package_present) { false }
 
   before do
+    stub_command('test -d /usr/local/repo_to_add').and_return(to_add_dir_present)
+    stub_command('test -e /usr/local/repo_to_add/Packages.gz').and_return(to_add_package_present)
+
     stub_command('test -d /usr/local/repo_to_add').and_return(to_add_dir_present)
     stub_command('test -e /usr/local/repo_to_add/Packages.gz').and_return(to_add_package_present)
   end

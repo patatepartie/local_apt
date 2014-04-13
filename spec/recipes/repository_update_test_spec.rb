@@ -1,4 +1,4 @@
-require 'unit/spec_helper'
+require 'spec_helper'
 
 describe 'local_apt::repository_update_test' do
   subject(:chef_run) do
@@ -13,7 +13,7 @@ describe 'local_apt::repository_update_test' do
   it { should run_bash('regenerate_repository_to_update') }
 
   it 'should notify when repository is regenerated' do
-    bash_update = subject.find_resource('bash', 'regenerate_repository_to_update')
+    bash_update = subject.bash('regenerate_repository_to_update')
     expect(bash_update).to notify('execute[apt-get update]').to(:run).delayed
   end
 end

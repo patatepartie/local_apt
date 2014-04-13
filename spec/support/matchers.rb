@@ -1,0 +1,1 @@
+ChefSpec::Runner.define_runner_method :bash

@@ -45,6 +45,8 @@ end
 
 action :update do
   execute 'apt-get update' do
+    command "apt-get update -o Dir::Etc::sourcelist='sources.list.d/#{new_resource.repo_name}.list' -o Dir::Etc::sourceparts='-' -o APT::Get::List-Cleanup='0'"
+    ignore_failure true
     action :nothing
   end
 

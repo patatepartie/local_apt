@@ -1,4 +1,4 @@
-require 'unit/spec_helper'
+require 'spec_helper'
 
 describe 'local_apt::dependencies' do
   subject(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
