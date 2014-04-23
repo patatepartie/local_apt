@@ -18,10 +18,14 @@ The code should however work on older versions. In that case override the versio
 # Usage
 `local_apt` provides one lwrp, `local_apt_repository` and two recipes, `default` and `dependencies`.
 
-Use the `default` recipe if you want to serve the `/usr/local/local-repository` directory (overridable), the `dependencies` recipe and the `local_apt_repository` for finer control or multiple repositories.
+Use the `default` recipe if you want to serve the `/usr/local/local-repository` directory (overridable).
+You can either manually add the packages you want to serve in that directory or provide a list of directories containing them via an attribute.
+
+Use the `dependencies` recipe and the `local_apt_repository` for finer control or multiple repositories.
 
 # Attributes
 * `default['local_apt']['directory']` - Directory that will be served by the `default` recipe
+* `default['local_apt']['packages_locations']` - Array of directories for which all debian packages will be linked from the serving directory
 
 # Recipes
 
@@ -36,7 +40,10 @@ This will include and install the proper dependencies, and create a local apt re
 ```
 /usr/local/local-repository
 ```
-This is overridable by an attribute.
+This is overridable by setting `node['local_apt']['directory']`.
+
+This recipe will also link all the debian (.deb) packages found in a provided list of directories and their subdirectories from the serving directory.
+
 
 ### dependencies recipe
 The `dependencies` recipe only install the required dependencies but do not create a local repository.
@@ -50,12 +57,12 @@ include_recipe 'local_apt::dependencies'
 ### `local_apt_repository` lwrp
 #### Actions
 * :add - Adds a repository to the apt source list which serves packages from `directory` and its subdirectories
-* :update - Regenerates the repository's packages list and update apt-get
 * :remove - Removes the apt source list but not `directory`
 
 #### Attribute Parameters
 * repo_name - Name of the apt source list file
 * directory - Directory containing the packages to serve
+* packages_locations - Directories containing packages that will be linked from `directory` and served
 
 # License & Authors
 

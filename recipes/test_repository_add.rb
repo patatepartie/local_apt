@@ -17,6 +17,21 @@
 # limitations under the License.
 #
 
-local_apt_repository 'to_add' do
-  directory '/usr/local/repo_to_add'
+local_apt_repository 'no_locations' do
+  directory '/usr/local/no_locations'
+end
+
+local_apt_repository 'one_location_one_package' do
+  directory '/usr/local/one_location_one_package'
+  packages_locations [node['local_apt']['spec']['dir1']]
+end
+
+local_apt_repository 'one_location_two_packages' do
+  directory '/usr/local/one_location_two_packages'
+  packages_locations [node['local_apt']['spec']['dir2']]
+end
+
+local_apt_repository 'two_locations_two_packages' do
+  directory '/usr/local/two_locations_two_packages'
+  packages_locations [node['local_apt']['spec']['dir3'], node['local_apt']['spec']['dir4']]
 end

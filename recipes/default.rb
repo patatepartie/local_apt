@@ -22,4 +22,5 @@ include_recipe 'local_apt::dependencies'
 
 local_apt_repository 'local' do
   directory node['local_apt']['directory']
+  packages_locations node['local_apt']['packages_locations']
 end

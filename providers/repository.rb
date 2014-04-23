@@ -20,42 +20,38 @@
 use_inline_resources if defined?(use_inline_resources)
 
 action :add do
-  directory "create_#{new_resource.repo_name}" do
-    path new_resource.directory
+  directory new_resource.directory do
     owner 'root'
     group 'root'
     recursive true
     mode 00755
-    not_if "test -d #{new_resource.directory}"
+  end
+
+  new_resource.packages_locations.each do |location|
+    # puts "location #{location}"
+    packages = LocalApt.find_packages_in(location)
+    # puts "packages #{packages.inspect}"
+    packages.each do |filename, filepath|
+      link filename do
+        target_file "#{new_resource.directory}/#{filename}"
+        owner 'root'
+        group 'root'
+        mode 00644
+        to filepath
+      end
+    end
   end
 
   bash "generate_repository_#{new_resource.repo_name}" do
     user 'root'
     code 'dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz'
     cwd new_resource.directory
-    not_if "test -e #{new_resource.directory}/Packages.gz"
   end
 
   apt_repository new_resource.repo_name do
     repo_name new_resource.repo_name
     uri "file:#{new_resource.directory}"
     components ['./']
-  end
-end
-
-action :update do
-  execute 'apt-get update' do
-    command "apt-get update -o Dir::Etc::sourcelist='sources.list.d/#{new_resource.repo_name}.list' -o Dir::Etc::sourceparts='-' -o APT::Get::List-Cleanup='0'"
-    ignore_failure true
-    action :nothing
-  end
-
-  bash "regenerate_repository_#{new_resource.repo_name}" do
-    user 'root'
-    code 'dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz'
-    cwd new_resource.directory
-
-    notifies :run, 'execute[apt-get update]', :delayed
   end
 end
 

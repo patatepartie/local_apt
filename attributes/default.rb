@@ -18,3 +18,4 @@
 #
 
 default['local_apt']['directory'] = '/usr/local/local-repository'
+default['local_apt']['packages_locations'] = []

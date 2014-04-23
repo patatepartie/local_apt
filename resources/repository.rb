@@ -25,5 +25,6 @@ def initialize(*args)
   @action = :add
 end
 
-attribute :repo_name, :kind_of => String, :name_attribute => true
-attribute :directory, :kind_of => String
+attribute :repo_name, kind_of: String, name_attribute: true
+attribute :directory, kind_of: String
+attribute :packages_locations, kind_of: Array, default: []
