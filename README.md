@@ -24,8 +24,8 @@ You can either manually add the packages you want to serve in that directory or 
 Use the `dependencies` recipe and the `local_apt_repository` for finer control or multiple repositories.
 
 # Attributes
-* `default['local_apt']['directory']` - Directory that will be served by the `default` recipe
-* `default['local_apt']['packages_locations']` - Array of directories for which all debian packages will be linked from the serving directory
+* `default['local_apt']['directory']` - Directory that will be served by the `default` recipe. Defaults to `/usr/local/local-repository`
+* `default['local_apt']['packages_locations']` - Array of directories for which all debian packages will be linked from the serving directory. Defaults to empty array
 
 # Recipes
 
@@ -42,7 +42,8 @@ This will include and install the proper dependencies, and create a local apt re
 ```
 This is overridable by setting `node['local_apt']['directory']`.
 
-This recipe will also link all the debian (.deb) packages found in a provided list of directories and their subdirectories from the serving directory.
+This recipe will also link all the debian (.deb) packages found in list of directories (and their subdirectories) from the serving directory.
+That list is provided by the `node['local_apt']['packages_locations']` attribute.
 
 
 ### dependencies recipe
